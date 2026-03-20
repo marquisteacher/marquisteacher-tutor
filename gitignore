@@ -1,0 +1,42 @@
+# ============================================================
+# MarquisTeacher AI Tutor — .gitignore
+# ============================================================
+
+# ── NEVER COMMIT THESE ───────────────────────────────────────
+
+# Environment / secrets
+.env
+.env.local
+.env.production
+config.local.js
+
+# API keys — if you ever move keys to a separate file
+secrets.js
+keys.js
+api-keys.js
+
+# ── SYSTEM FILES ─────────────────────────────────────────────
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# ── EDITOR FILES ─────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── LOGS ─────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+
+# ── NODE (if you ever add a build step) ──────────────────────
+node_modules/
+package-lock.json
+
+# ── BUILD OUTPUTS ────────────────────────────────────────────
+dist/
+build/
