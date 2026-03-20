@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarquisTeacher Tutor — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+
+<div class="auth-split">
+
+  <!-- LEFT PANEL -->
+  <div class="auth-left">
+    <div class="auth-brand">
+      <div class="auth-logo">MT</div>
+      <div>
+        <div class="auth-logo-text">MarquisTeacher</div>
+        <div class="auth-logo-sub">AI Tutor · Powered by Gemini</div>
+      </div>
+    </div>
+
+    <div class="auth-hero-text">
+      <h1>Your Personal<br><em>English</em><br>Tutor.</h1>
+      <p>Structured lessons. Real conversation. Friendly guidance. Tailored to your exact CEFR level.</p>
+    </div>
+
+    <div class="auth-features">
+      <div class="auth-feature">
+        <div class="af-icon">🎯</div>
+        <div>
+          <div class="af-title">Personalised to You</div>
+          <div class="af-desc">Lessons built around your skill gaps</div>
+        </div>
+      </div>
+      <div class="auth-feature">
+        <div class="af-icon">🎤</div>
+        <div>
+          <div class="af-title">Voice + Text</div>
+          <div class="af-desc">Speak or type — your choice</div>
+        </div>
+      </div>
+      <div class="auth-feature">
+        <div class="af-icon">⏱️</div>
+        <div>
+          <div class="af-title">15-Minute Sessions</div>
+          <div class="af-desc">Focused, effective, no time wasted</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-back">
+      <a href="https://marquisteacher.github.io/marquisteacher-academy" target="_blank">
+        ← Back to MarquisTeacher Academy
+      </a>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="auth-right">
+    <div class="auth-card">
+
+      <!-- TABS -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="login-form">
+        <div class="auth-form-header">
+          <div class="auth-form-title">Welcome back!</div>
+          <div class="auth-form-sub">Sign in to continue your learning journey.</div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Email Address</label>
+          <input class="form-input" id="login-email" type="email" placeholder="you@example.com">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="login-password" type="password" placeholder="••••••••">
+        </div>
+        <div class="form-error" id="login-error"></div>
+        <button class="btn-auth" onclick="handleLogin()">
+          <span id="login-btn-text">Sign In →</span>
+        </button>
+        <div class="auth-switch">
+          Don't have an account?
+          <span onclick="switchTab('register')">Register here</span>
+        </div>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="register-form" style="display:none">
+        <div class="auth-form-header">
+          <div class="auth-form-title">Join the Academy!</div>
+          <div class="auth-form-sub">Create your account to start learning.</div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" id="reg-full-name" type="text" placeholder="Marquis Williams">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Email Address</label>
+          <input class="form-input" id="reg-email" type="email" placeholder="you@example.com">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="reg-password" type="password" placeholder="At least 8 characters">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Your CEFR Level (from exam)</label>
+          <div class="level-select-grid">
+            <button class="level-sel-btn" data-level="A1" onclick="selectLevel(this)">A1<span>Beginner</span></button>
+            <button class="level-sel-btn" data-level="A2" onclick="selectLevel(this)">A2<span>Elementary</span></button>
+            <button class="level-sel-btn" data-level="B1" onclick="selectLevel(this)">B1<span>Intermediate</span></button>
+            <button class="level-sel-btn" data-level="B2" onclick="selectLevel(this)">B2<span>Upper-Int.</span></button>
+            <button class="level-sel-btn" data-level="C1" onclick="selectLevel(this)">C1<span>Advanced</span></button>
+            <button class="level-sel-btn" data-level="C2" onclick="selectLevel(this)">C2<span>Mastery</span></button>
+          </div>
+        </div>
+        <div class="form-error" id="reg-error"></div>
+        <button class="btn-auth" onclick="handleRegister()">
+          <span id="reg-btn-text">Create Account →</span>
+        </button>
+        <div class="auth-switch">
+          Already have an account?
+          <span onclick="switchTab('login')">Sign in here</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="auth.js"></script>
+</body>
+</html>

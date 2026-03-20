@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarquisTeacher Tutor — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-page">
+
+<!-- NAV -->
+<nav class="tutor-nav">
+  <div class="tutor-nav-brand">
+    <div class="nav-logo-mark">MT</div>
+    <div>
+      <div class="nav-brand-name">MarquisTeacher Tutor</div>
+      <div class="nav-brand-sub">AI Powered Learning</div>
+    </div>
+  </div>
+  <div class="tutor-nav-right">
+    <div class="nav-user" id="nav-user-info"></div>
+    <button class="btn-logout" onclick="logout()">Sign Out</button>
+  </div>
+</nav>
+
+<!-- DASHBOARD -->
+<main class="dashboard-main">
+
+  <!-- WELCOME HERO -->
+  <div class="dash-hero">
+    <div class="dash-hero-text">
+      <div class="dash-greeting" id="dash-greeting">Good evening!</div>
+      <h2 class="dash-name" id="dash-name">Loading...</h2>
+      <p class="dash-tagline">Ready for today's session? Your English improves every time you show up.</p>
+    </div>
+    <div class="dash-level-badge" id="dash-level-badge">
+      <div class="dlb-code" id="dlb-code">—</div>
+      <div class="dlb-name" id="dlb-name">Loading</div>
+      <div class="dlb-label">YOUR LEVEL</div>
+    </div>
+  </div>
+
+  <!-- STATS ROW -->
+  <div class="dash-stats">
+    <div class="dash-stat-card">
+      <div class="dsc-num" id="stat-sessions">0</div>
+      <div class="dsc-label">Sessions Completed</div>
+    </div>
+    <div class="dash-stat-card">
+      <div class="dsc-num" id="stat-minutes">0</div>
+      <div class="dsc-label">Minutes Practiced</div>
+    </div>
+    <div class="dash-stat-card">
+      <div class="dsc-num" id="stat-streak">0</div>
+      <div class="dsc-label">Day Streak 🔥</div>
+    </div>
+    <div class="dash-stat-card">
+      <div class="dsc-num" id="stat-level">—</div>
+      <div class="dsc-label">Current Level</div>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="dash-grid">
+
+    <!-- START SESSION CARD -->
+    <div class="dash-card dash-card-primary">
+      <div class="dc-tag">// Today's Session</div>
+      <h3 class="dc-title">Start Your<br>15-Minute Session</h3>
+      <p class="dc-desc">Your session will focus on your skill gaps — structured exercises first, then free conversation with your AI tutor Marq.</p>
+
+      <div class="session-breakdown">
+        <div class="sb-item">
+          <div class="sb-time">8 min</div>
+          <div class="sb-label">Structured Exercises</div>
+          <div class="sb-icons">📐 📖 📰 💬</div>
+        </div>
+        <div class="sb-divider">→</div>
+        <div class="sb-item">
+          <div class="sb-time">7 min</div>
+          <div class="sb-label">Free Conversation</div>
+          <div class="sb-icons">🎤 💭 🌍</div>
+        </div>
+      </div>
+
+      <button class="btn-start-session" onclick="startSession()">
+        Begin Session →
+      </button>
+    </div>
+
+    <!-- SKILL SNAPSHOT -->
+    <div class="dash-card">
+      <div class="dc-tag">// Skill Snapshot</div>
+      <h3 class="dc-title-sm">Your Focus Areas</h3>
+      <div class="skill-snapshot" id="skill-snapshot">
+        <div class="ss-item">
+          <div class="ss-label">📐 Grammar</div>
+          <div class="ss-bar-wrap"><div class="ss-bar" id="bar-grammar" style="width:0%"></div></div>
+          <div class="ss-pct" id="pct-grammar">—</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-label">📖 Vocabulary</div>
+          <div class="ss-bar-wrap"><div class="ss-bar" id="bar-vocab" style="width:0%;background:#27ae60"></div></div>
+          <div class="ss-pct" id="pct-vocab">—</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-label">📰 Reading</div>
+          <div class="ss-bar-wrap"><div class="ss-bar" id="bar-reading" style="width:0%;background:#f39c12"></div></div>
+          <div class="ss-pct" id="pct-reading">—</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-label">💬 Idioms</div>
+          <div class="ss-bar-wrap"><div class="ss-bar" id="bar-idioms" style="width:0%;background:#8e44ad"></div></div>
+          <div class="ss-pct" id="pct-idioms">—</div>
+        </div>
+      </div>
+      <div class="snap-note">
+        Take the <a href="https://marquisteacher.github.io/marquisteacher-academy#quiz" target="_blank">English Assessment</a> to populate your skill breakdown.
+      </div>
+    </div>
+
+    <!-- SESSION HISTORY -->
+    <div class="dash-card dash-card-full">
+      <div class="dc-tag">// Session History</div>
+      <h3 class="dc-title-sm">Recent Sessions</h3>
+      <div id="session-history">
+        <div class="empty-history">
+          No sessions yet — start your first one above! 🎓
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="dashboard.js"></script>
+</body>
+</html>

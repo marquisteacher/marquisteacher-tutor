@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarquisTeacher Tutor — Session</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="tutor-page">
+
+<!-- TUTOR NAV -->
+<nav class="session-nav">
+  <div class="sn-left">
+    <div class="nav-logo-mark small">MT</div>
+    <div class="sn-session-info">
+      <div class="sn-title">Live Session</div>
+      <div class="sn-user" id="sn-user">Loading...</div>
+    </div>
+  </div>
+  <div class="sn-center">
+    <div class="session-timer" id="session-timer">15:00</div>
+    <div class="timer-label" id="timer-phase">Structured Exercises</div>
+  </div>
+  <div class="sn-right">
+    <div class="session-phase-indicator" id="phase-indicator">
+      <div class="phase-dot active" id="phase-1-dot"></div>
+      <div class="phase-line"></div>
+      <div class="phase-dot" id="phase-2-dot"></div>
+    </div>
+    <button class="btn-end-session" onclick="endSession()">End Session</button>
+  </div>
+</nav>
+
+<!-- MAIN SESSION LAYOUT -->
+<div class="session-layout">
+
+  <!-- MARQ SIDEBAR -->
+  <div class="marq-sidebar">
+    <div class="marq-avatar" id="marq-avatar">
+      <div class="marq-face" id="marq-face">
+        <img src="marq.png" alt="Marq" class="marq-img" onerror="this.style.display='none';document.getElementById('marq-fallback').style.display='flex'">
+        <div class="marq-fallback" id="marq-fallback">🤖</div>
+      </div>
+      <div class="marq-status" id="marq-status">
+        <div class="marq-status-dot"></div>
+        <span>Marq is ready</span>
+      </div>
+    </div>
+
+    <div class="marq-info">
+      <div class="marq-name">Marq</div>
+      <div class="marq-role">Your AI English Tutor</div>
+      <div class="marq-level-tag" id="marq-level-tag">Teaching: —</div>
+    </div>
+
+    <!-- Phase indicator -->
+    <div class="phase-panel">
+      <div class="pp-item active" id="pp-exercises">
+        <div class="pp-num">01</div>
+        <div>
+          <div class="pp-title">Structured Exercises</div>
+          <div class="pp-time">8 minutes</div>
+        </div>
+      </div>
+      <div class="pp-item" id="pp-conversation">
+        <div class="pp-num">02</div>
+        <div>
+          <div class="pp-title">Free Conversation</div>
+          <div class="pp-time">7 minutes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voice toggle -->
+    <div class="voice-panel">
+      <div class="vp-label">Voice Input</div>
+      <button class="voice-toggle" id="voice-toggle" onclick="toggleVoice()">
+        <span id="voice-icon">🎤</span>
+        <span id="voice-label">Enable Voice</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- CHAT AREA -->
+  <div class="chat-area">
+
+    <!-- Messages -->
+    <div class="messages" id="messages">
+      <div class="message marq-msg intro-msg">
+        <div class="msg-avatar">🤖</div>
+        <div class="msg-bubble">
+          <div class="msg-name">Marq</div>
+          <div class="msg-text" id="intro-text">
+            Loading your session...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="typing-indicator" id="typing-indicator" style="display:none">
+      <div class="typing-avatar">🤖</div>
+      <div class="typing-bubble">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div>
+
+    <!-- Input area -->
+    <div class="chat-input-area">
+
+      <!-- Quick responses (shown during exercises) -->
+      <div class="quick-responses" id="quick-responses" style="display:none"></div>
+
+      <!-- Text input -->
+      <div class="chat-input-row">
+        <div class="chat-input-wrap">
+          <textarea
+            class="chat-input"
+            id="chat-input"
+            placeholder="Type your response here..."
+            rows="1"
+            onkeydown="handleInputKey(event)"
+            oninput="autoResize(this)"
+          ></textarea>
+          <button class="mic-btn" id="mic-btn" onclick="startListening()" title="Voice input">
+            🎤
+          </button>
+        </div>
+        <button class="send-btn" onclick="sendMessage()" id="send-btn">
+          Send →
+        </button>
+      </div>
+
+      <div class="input-hint" id="input-hint">
+        Press Enter to send · Shift+Enter for new line · 🎤 for voice
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- SESSION COMPLETE OVERLAY -->
+<div class="session-complete-overlay" id="session-complete" style="display:none">
+  <div class="sc-card">
+    <div class="sc-emoji">🎓</div>
+    <h2 class="sc-title">Session Complete!</h2>
+    <div class="sc-name" id="sc-name">Well done!</div>
+    <div class="sc-stats">
+      <div class="sc-stat">
+        <div class="sc-stat-num" id="sc-messages">0</div>
+        <div class="sc-stat-label">Exchanges</div>
+      </div>
+      <div class="sc-stat">
+        <div class="sc-stat-num">15</div>
+        <div class="sc-stat-label">Minutes</div>
+      </div>
+      <div class="sc-stat">
+        <div class="sc-stat-num" id="sc-level">—</div>
+        <div class="sc-stat-label">Your Level</div>
+      </div>
+    </div>
+    <div class="sc-summary" id="sc-summary">
+      Great work today! Every session brings you closer to fluency.
+    </div>
+    <div class="sc-actions">
+      <button class="btn-auth" onclick="window.location.href='dashboard.html'">
+        Back to Dashboard →
+      </button>
+      <button class="btn-auth-outline" onclick="window.location.reload()">
+        Start Another Session
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="tutor.js"></script>
+</body>
+</html>
