@@ -205,6 +205,9 @@ body::before {
   justify-content:center;
   padding:2rem;
   background:var(--bg);
+  overflow-y:auto;
+  align-items:flex-start;
+  padding-top:3rem;
 }
 
 .auth-card {
@@ -216,6 +219,7 @@ body::before {
   max-width:440px;
   position:relative;
   z-index:1;
+  margin:auto 0;
 }
 
 .auth-tabs {
