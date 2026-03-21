@@ -8,9 +8,7 @@
 // ── CONFIG ────────────────────────────────────────────────────
 // API key loaded from config.js
 // var GEMINI_API_KEY is defined there
-var GEMINI_URL     = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_API_KEY;
-
-var API_URL = 'https://marquisteacher-backend.onrender.com';
+var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='AIzaSyDEA3aWqtlSLGlHZ9iMmaOpCd4Y3mzWmvc';
 
 // Session config
 var PHASE_1_DURATION = 8 * 60; // 8 minutes in seconds
