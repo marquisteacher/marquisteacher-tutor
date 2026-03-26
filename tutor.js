@@ -116,53 +116,38 @@ function buildSystemPrompt(user, phase) {
 
 // ── GEMINI API CALL ───────────────────────────────────────────
 async function callGemini(userMessage) {
-  // Add user message to history
   conversationHistory.push({
     role:  'user',
     parts: [{ text: userMessage }]
   });
 
-  var systemPrompt = buildSystemPrompt(user, currentPhase);
-
-  var body = {
-    system_instruction: {
-      parts: [{ text: systemPrompt }]
-    },
-    contents: conversationHistory,
-    generationConfig: {
-      temperature:     0.8,
-      maxOutputTokens: 300,
-      topP:            0.9,
-    }
-  };
-
   try {
-    var res  = await fetch(GEMINI_URL, {
+    var res = await fetch('https://marquisteacher-backend.onrender.com/api/tutor/chat', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(body)
+      body:    JSON.stringify({
+        name:    user.name  || 'Student',
+        level:   user.level || 'B1',
+        skills:  JSON.parse(localStorage.getItem('mt_exam_skills') || '{}'),
+        phase:   currentPhase,
+        history: conversationHistory.slice(-10),
+        message: userMessage
+      })
     });
 
     var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Chat error');
 
-    if (!res.ok) {
-      console.error('Gemini error:', data);
-      return "I'm having a little trouble connecting right now. Let's try again — could you repeat that?";
-    }
-
-    var reply = data.candidates[0].content.parts[0].text;
-
-    // Add assistant response to history
     conversationHistory.push({
       role:  'model',
-      parts: [{ text: reply }]
+      parts: [{ text: data.reply }]
     });
 
-    return reply;
+    return data.reply;
 
   } catch(e) {
-    console.error('Gemini fetch error:', e);
-    return "I had a small hiccup there! No worries — let's continue. Could you say that again?";
+    console.error('Chat error:', e);
+    return "I had a small hiccup! Could you say that again? 😊";
   }
 }
 
