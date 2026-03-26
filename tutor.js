@@ -8,7 +8,7 @@
 // ── CONFIG ────────────────────────────────────────────────────
 // API key loaded from config.js
 // var GEMINI_API_KEY is defined there
-var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR=KEY=HERE';
+var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyCJNFvKJ9W9NWG70UrD_3F-ybcdFGJlpDQ';
 // Session config
 var PHASE_1_DURATION = 8 * 60; // 8 minutes in seconds
 var PHASE_2_DURATION = 7 * 60; // 7 minutes in seconds
