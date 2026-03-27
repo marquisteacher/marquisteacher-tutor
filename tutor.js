@@ -171,13 +171,17 @@ function addMessage(text, sender, correction) {
     + corrHtml
     + '</div>';
 
-  messages.appendChild(div);
-  messages.scrollTop = messages.scrollHeight;
+messages.appendChild(div);
+  setTimeout(function() {
+    messages.scrollTop = messages.scrollHeight;
+  }, 100);
 }
 
 function showTyping() {
   document.getElementById('typing-indicator').style.display = 'flex';
-  document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+  setTimeout(function() {
+    document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+  }, 100);
 }
 
 function hideTyping() {
