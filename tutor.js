@@ -7,8 +7,8 @@
 
 // ── CONFIG ────────────────────────────────────────────────────
 // API key loaded from config.js
-// var GEMINI_API_KEY is defined there
-var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=YOU=KEY=HERE';
+// Gemini API calls handled by backend
+var API_URL = 'https://marquisteacher-backend.onrender.com';
 // Session config
 var PHASE_1_DURATION = 8 * 60; // 8 minutes in seconds
 var PHASE_2_DURATION = 7 * 60; // 7 minutes in seconds
@@ -171,12 +171,11 @@ function addMessage(text, sender, correction) {
     + corrHtml
     + '</div>';
 
-messages.appendChild(div);
+ messages.appendChild(div);
   setTimeout(function() {
     messages.scrollTop = messages.scrollHeight;
   }, 100);
-}
-
+} 
 function showTyping() {
   document.getElementById('typing-indicator').style.display = 'flex';
   setTimeout(function() {
