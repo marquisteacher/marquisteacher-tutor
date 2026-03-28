@@ -215,6 +215,77 @@ function updatePhaseDisplay() {
   }
 }
 
+// ── TRANSCRIPT DOWNLOAD ───────────────────────────────────────
+function downloadTranscript() {
+  var dateStr  = new Date().toLocaleDateString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+  var timeStr  = new Date().toLocaleTimeString('en-US');
+  var lines    = [];
+
+  // Header
+  lines.push('============================================================');
+  lines.push('   MarquisTeacher Academy — Session Transcript');
+  lines.push('============================================================');
+  lines.push('');
+  lines.push('Student:  ' + (user.name  || 'Student'));
+  lines.push('Level:    ' + (user.level || 'A1') + ' — ' + (LEVEL_NAMES[user.level] || 'Beginner'));
+  lines.push('Date:     ' + dateStr);
+  lines.push('Time:     ' + timeStr);
+  lines.push('Duration: 15 minutes');
+  lines.push('Exchanges: ' + messageCount);
+  lines.push('');
+  lines.push('------------------------------------------------------------');
+  lines.push('   CONVERSATION');
+  lines.push('------------------------------------------------------------');
+  lines.push('');
+
+  // Conversation history
+  conversationHistory.forEach(function(msg) {
+    var speaker = msg.role === 'user'
+      ? (user.name || 'Student')
+      : 'Marq';
+    var text = msg.parts[0].text;
+
+    // Skip system messages
+    if (text.indexOf('[SYSTEM:') === 0) return;
+
+    lines.push(speaker + ':');
+    lines.push(text);
+    lines.push('');
+  });
+
+  // Summary
+  var summaryEl = document.getElementById('sc-summary');
+  if (summaryEl && summaryEl.textContent) {
+    lines.push('------------------------------------------------------------');
+    lines.push('   SESSION SUMMARY');
+    lines.push('------------------------------------------------------------');
+    lines.push('');
+    lines.push(summaryEl.textContent);
+    lines.push('');
+  }
+
+  // Footer
+  lines.push('============================================================');
+  lines.push('   MarquisTeacher Academy');
+  lines.push('   MarquisTeacher@gmail.com');
+  lines.push('   © 2025 Marquis Williams');
+  lines.push('============================================================');
+
+  // Create and download file
+  var content  = lines.join('\n');
+  var blob     = new Blob([content], { type: 'text/plain' });
+  var url      = window.URL.createObjectURL(blob);
+  var a        = document.createElement('a');
+  a.href       = url;
+  a.download   = 'MarquisTeacher_Transcript_' + (user.name || 'Student').replace(/\s/g,'_') + '_' + Date.now() + '.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
+}
+
 // ── END SESSION ───────────────────────────────────────────────
 function endSession() {
   sessionActive = false;
