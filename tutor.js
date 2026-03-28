@@ -72,6 +72,15 @@ async function callGemini(userMessage) {
   }
 }
 
+// ── MARKDOWN PARSER ───────────────────────────────────────────
+function parseMarkdown(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<code style="background:rgba(42,179,200,0.15);padding:2px 6px;border-radius:4px;font-family:monospace">$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
 // ── MESSAGE DISPLAY ───────────────────────────────────────────
 function addMessage(text, sender, correction) {
   var messages  = document.getElementById('messages');
@@ -88,7 +97,7 @@ function addMessage(text, sender, correction) {
   div.innerHTML = '<div class="msg-avatar">' + avatar + '</div>'
     + '<div class="msg-bubble">'
     + '<div class="msg-name">' + name + '</div>'
-    + '<div class="msg-text">' + text.replace(/\n/g, '<br>') + '</div>'
+    + '<div class="msg-text">' + parseMarkdown(text) + '</div>'
     + corrHtml
     + '</div>';
 
@@ -359,6 +368,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
 
   // Get opening message from Marq
+  conversationHistory = [];
   showTyping();
   var openingMessage = await callGemini(
     '[SYSTEM: This is the start of a new 15-minute English tutoring session. ' +
@@ -368,6 +378,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     'Make it energetic and welcoming!]'
   );
   hideTyping();
+  conversationHistory = [];
 
   // Display as proper chat bubble
   addMessage(openingMessage, 'marq');
