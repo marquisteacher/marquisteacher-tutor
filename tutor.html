@@ -31,7 +31,41 @@
     <button class="btn-end-session" onclick="endSession()">End Session</button>
   </div>
 </nav>
+<!-- ── PREVIEW SCREEN ── -->
+<div id="preview-screen" style="display:none">
+  <div class="preview-container">
+    <div class="preview-card">
 
+      <div class="preview-tag">// Your Personalised Session</div>
+      <h2 class="preview-title" id="preview-title">Welcome!</h2>
+      <p class="preview-sub" id="preview-sub">
+        Based on your MarquisTeacher Academy assessment,
+        your session has been personalised just for you.
+      </p>
+
+      <div class="preview-level" id="preview-level-badge">
+        <div class="plb-code" id="preview-level-code">—</div>
+        <div class="plb-name" id="preview-level-name">Loading</div>
+        <div class="plb-label">YOUR CEFR LEVEL</div>
+      </div>
+
+      <div class="preview-focus">
+        <div class="pf-title">Marq will focus on:</div>
+        <div class="preview-skills" id="preview-skills"></div>
+      </div>
+
+      <div class="preview-actions">
+        <button class="btn-auth" onclick="startFromPreview()">
+          Begin Session →
+        </button>
+        <button class="btn-auth-outline" onclick="skipPreview()">
+          Skip Preview
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
 <!-- MAIN SESSION LAYOUT -->
 <div class="session-layout">
 
