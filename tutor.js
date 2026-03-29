@@ -10,7 +10,19 @@ var API_URL          = 'https://marquisteacher-backend.onrender.com';
 var PHASE_1_DURATION = 8 * 60;
 var PHASE_2_DURATION = 7 * 60;
 var TOTAL_DURATION   = PHASE_1_DURATION + PHASE_2_DURATION;
-
+// ── URL PARAMETERS ────────────────────────────────────────────
+function getURLParams() {
+  var params = new URLSearchParams(window.location.search);
+  return {
+    name:       params.get('name')       || null,
+    level:      params.get('level')      || null,
+    selfLevel:  params.get('selfLevel')  || null,
+    grammar:    parseInt(params.get('grammar'))    || 0,
+    vocabulary: parseInt(params.get('vocabulary')) || 0,
+    reading:    parseInt(params.get('reading'))    || 0,
+    idioms:     parseInt(params.get('idioms'))     || 0
+  };
+}
 // ── STATE ─────────────────────────────────────────────────────
 var user                = null;
 var conversationHistory = [];
@@ -285,7 +297,95 @@ function downloadTranscript() {
   document.body.removeChild(a);
   window.URL.revokeObjectURL(url);
 }
+// ── PREVIEW SCREEN ────────────────────────────────────────────
+function showPreviewScreen(params) {
+  var preview = document.getElementById('preview-screen');
+  var session = document.getElementById('session-layout');
+  var nav     = document.querySelector('.session-nav');
 
+  // Hide session layout and nav
+  if (session) session.style.display = 'none';
+  if (nav)     nav.style.display     = 'none';
+
+  // Show preview
+  preview.style.display = 'block';
+
+  // Set title
+  var titleEl = document.getElementById('preview-title');
+  if (titleEl) titleEl.textContent = 'Welcome ' + (params.name || 'Student') + '! 🎓';
+
+  // Set level badge
+  var levelCode = params.level || 'A1';
+  var levelColor = {
+    A1:'#2ab3c8', A2:'#27ae60', B1:'#f39c12',
+    B2:'#e67e22', C1:'#e74c3c', C2:'#8e44ad'
+  }[levelCode] || '#2ab3c8';
+
+  var codeEl = document.getElementById('preview-level-code');
+  var nameEl = document.getElementById('preview-level-name');
+  if (codeEl) {
+    codeEl.textContent = levelCode;
+    codeEl.style.color = levelColor;
+  }
+  if (nameEl) nameEl.textContent = LEVEL_NAMES[levelCode] || levelCode;
+
+  // Build skill items
+  var skills = [
+    { name: 'Grammar',    icon: '📐', pct: params.grammar    || 0 },
+    { name: 'Vocabulary', icon: '📖', pct: params.vocabulary || 0 },
+    { name: 'Reading',    icon: '📰', pct: params.reading    || 0 },
+    { name: 'Idioms',     icon: '💬', pct: params.idioms     || 0 },
+  ];
+
+  var skillsEl = document.getElementById('preview-skills');
+  if (skillsEl) {
+    skillsEl.innerHTML = skills.map(function(s) {
+      var tag   = s.pct < 40  ? 'PRIORITY'
+                : s.pct < 65  ? 'FOCUS'
+                : s.pct < 85  ? 'GOOD'
+                : 'STRONG';
+      var cls   = s.pct < 40  ? 'tag-priority'
+                : s.pct < 65  ? 'tag-focus'
+                : s.pct < 85  ? 'tag-good'
+                : 'tag-strong';
+      var color = s.pct < 40  ? '#e74c3c'
+                : s.pct < 65  ? '#f39c12'
+                : s.pct < 85  ? '#2ab3c8'
+                : '#27ae60';
+
+      return '<div class="preview-skill-item">'
+        + '<div class="psi-left">'
+        + '<span class="psi-icon">' + s.icon + '</span>'
+        + '<span class="psi-name">' + s.name + '</span>'
+        + '</div>'
+        + '<div style="display:flex;align-items:center;gap:0.75rem">'
+        + '<span class="psi-pct" style="color:' + color + '">' + s.pct + '%</span>'
+        + '<span class="psi-tag ' + cls + '">' + tag + '</span>'
+        + '</div>'
+        + '</div>';
+    }).join('');
+  }
+}
+
+function startFromPreview() {
+  var preview = document.getElementById('preview-screen');
+  var session = document.getElementById('session-layout');
+  var nav     = document.querySelector('.session-nav');
+
+  // Hide preview
+  preview.style.display = 'none';
+
+  // Show session
+  if (session) session.style.display = 'grid';
+  if (nav)     nav.style.display     = 'flex';
+
+  // Start the actual session
+  initSession();
+}
+
+function skipPreview() {
+  startFromPreview();
+}
 // ── END SESSION ───────────────────────────────────────────────
 function endSession() {
   sessionActive = false;
@@ -418,6 +518,23 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   user = JSON.parse(userData);
 
+  // Check for URL parameters from Academy
+  var urlParams = getURLParams();
+
+  // If URL has exam data — merge into user object
+  if (urlParams.name)  user.name  = urlParams.name;
+  if (urlParams.level) user.level = urlParams.level;
+
+  // Save skill scores from URL to localStorage
+  if (urlParams.grammar || urlParams.vocabulary || urlParams.reading || urlParams.idioms) {
+    localStorage.setItem('mt_exam_skills', JSON.stringify({
+      grammar:    urlParams.grammar,
+      vocabulary: urlParams.vocabulary,
+      reading:    urlParams.reading,
+      idioms:     urlParams.idioms
+    }));
+  }
+
   // Set nav info
   document.getElementById('sn-user').textContent = user.name || 'Student';
 
@@ -428,11 +545,23 @@ document.addEventListener('DOMContentLoaded', async function() {
     levelTag.style.color = LEVEL_COLORS[user.level] || '#2ab3c8';
   }
 
+  // Show preview screen if came from Academy
+  if (urlParams.level) {
+    showPreviewScreen(urlParams);
+    return;
+  }
+
+  // Otherwise start session directly
+  initSession();
+});
+
+// ── INIT SESSION ──────────────────────────────────────────────
+async function initSession() {
   // Start timer and phase display
   startTimer();
   updatePhaseDisplay();
 
-  // Clear the intro placeholder
+  // Clear intro placeholder
   var introMsg = document.getElementById('intro-text');
   if (introMsg) {
     introMsg.closest('.message').style.display = 'none';
@@ -456,4 +585,4 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   // Focus input
   document.getElementById('chat-input').focus();
-});
+}
