@@ -545,8 +545,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     levelTag.style.color = LEVEL_COLORS[user.level] || '#2ab3c8';
   }
 
-  // Show preview screen if came from Academy
+   // Show preview screen if came from Academy
   if (urlParams.level) {
+    // Reset any existing session state
+    clearInterval(timerInterval);
+    timeRemaining    = TOTAL_DURATION;
+    currentPhase     = 1;
+    sessionActive    = true;
+    messageCount     = 0;
+    conversationHistory = [];
+
+    // Clear chat messages
+    var messages = document.getElementById('messages');
+    if (messages) messages.innerHTML = '';
+
     showPreviewScreen(urlParams);
     return;
   }
