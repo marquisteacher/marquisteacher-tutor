@@ -114,11 +114,17 @@ async function handleRegister() {
     }
 
     // Save token and user info
-    localStorage.setItem('mt_token', data.token);
-    localStorage.setItem('mt_user',  JSON.stringify({
-      ...data.user,
-      level: selectedLevel
-    }));
+localStorage.setItem('mt_token', data.token);
+localStorage.setItem('mt_user', JSON.stringify({
+  ...data.user,
+  level: selectedLevel
+}));
+
+// Clear previous user's session data
+localStorage.removeItem('mt_sessions');
+localStorage.removeItem('mt_exam_skills');
+
+window.location.href = 'dashboard.html';
 
     // Redirect to dashboard
     window.location.href = 'dashboard.html';
