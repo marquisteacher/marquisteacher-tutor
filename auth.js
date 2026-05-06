@@ -122,7 +122,6 @@ localStorage.setItem('mt_user', JSON.stringify({
 
 // Clear previous user's session data
 localStorage.removeItem('mt_sessions');
-localStorage.removeItem('mt_exam_skills');
 
 window.location.href = 'dashboard.html';
 
