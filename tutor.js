@@ -569,6 +569,12 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // ── INIT SESSION ──────────────────────────────────────────────
 async function initSession() {
+  // Prevent double initialisation
+  if (document.getElementById('messages').children.length > 0) {
+    return;
+  }
+   
+async function initSession() {
   // Start timer and phase display
   startTimer();
   updatePhaseDisplay();
