@@ -6,6 +6,10 @@
 var API_URL    = 'https://marquisteacher-backend.onrender.com';
 var selectedLevel = '';
 
+// Pre-fill level from URL if coming from Academy
+var urlLevel = new URLSearchParams(window.location.search).get('level');
+if (urlLevel) selectedLevel = urlLevel;
+
 // ── TAB SWITCHING ─────────────────────────────────────────────
 function switchTab(tab) {
   document.querySelectorAll('.auth-tab').forEach(function(t, i) {
@@ -141,6 +145,12 @@ document.addEventListener('DOMContentLoaded', function() {
   if (localStorage.getItem('mt_token')) {
     window.location.href = 'dashboard.html';
     return;
+  }
+
+  // Pre-select level button if URL has level
+  if (urlLevel) {
+    var btn = document.querySelector('.level-sel-btn[data-level="' + urlLevel + '"]');
+    if (btn) selectLevel(btn);
   }
 
   document.getElementById('login-password').addEventListener('keydown', function(e) {
