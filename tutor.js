@@ -569,6 +569,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // ── INIT SESSION ────────────────────────────────────────────── 
 async function initSession() {
+  // Prevent double initialisation
+  if (sessionActive === false || timerInterval !== null) return;
+
   // Start timer and phase display
   startTimer();
   updatePhaseDisplay();
