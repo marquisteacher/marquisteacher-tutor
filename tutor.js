@@ -30,6 +30,7 @@ var currentPhase        = 1;
 var timeRemaining       = TOTAL_DURATION;
 var timerInterval       = null;
 var sessionActive       = true;
+var sessionInitialised  = false;
 var messageCount        = 0;
 var voiceEnabled        = false;
 var recognition         = null;
@@ -570,7 +571,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 // ── INIT SESSION ────────────────────────────────────────────── 
 async function initSession() {
   // Prevent double initialisation
-  if (sessionActive === false || timerInterval !== null) return;
+  if (sessionInitialised) return;
+  sessionInitialised = true;
 
   // Start timer and phase display
   startTimer();
