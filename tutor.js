@@ -570,36 +570,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // ── INIT SESSION ────────────────────────────────────────────── 
 async function initSession() {
-  // Prevent double initialisation
   if (sessionInitialised) return;
   sessionInitialised = true;
-
-  // Start timer and phase display
   startTimer();
   updatePhaseDisplay();
-
-  // Clear intro placeholder
-  var introMsg = document.getElementById('intro-text');
-  if (introMsg) {
-    introMsg.closest('.message').style.display = 'none';
-  }
-
-  // Get opening message from Marq
-  conversationHistory = [];
-  showTyping();
-  var openingMessage = await callGemini(
-    '[SYSTEM: This is the start of a new 15-minute English tutoring session. ' +
-    'Greet the student warmly by name (' + (user.name || 'Student') + '), ' +
-    'tell them you\'re excited to work together today, briefly mention you\'ll start with ' +
-    'some exercises then have a conversation, and jump straight into the first exercise. ' +
-    'Make it energetic and welcoming!]'
-  );
-  hideTyping();
-  conversationHistory = [];
-
-  // Display as proper chat bubble
-  addMessage(openingMessage, 'marq');
-
-  // Focus input
   document.getElementById('chat-input').focus();
 }
