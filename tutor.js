@@ -392,8 +392,10 @@ function endSession() {
   sessionActive = false;
   clearInterval(timerInterval);
 
-var actualMinutes = Math.round((TOTAL_DURATION - timeRemaining) / 60);
+var actualMinutes = Math.max(1, Math.round((TOTAL_DURATION - timeRemaining) / 60));
 var sessions = JSON.parse(localStorage.getItem('mt_sessions') || '[]');
+console.log('Time remaining:', timeRemaining);
+console.log('Actual minutes:', Math.round((TOTAL_DURATION - timeRemaining) / 60));
 sessions.push({
   ts:        Date.now(),
   level:     user.level || 'A1',
