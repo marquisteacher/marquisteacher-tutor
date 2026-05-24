@@ -409,6 +409,7 @@ sessions.push({
 
   document.getElementById('sc-name').textContent     = 'Excellent work, ' + (user.name || 'Student') + '!';
   document.getElementById('sc-messages').textContent = messageCount;
+  document.getElementById('sc-duration').textContent = actualMinutes;
   document.getElementById('sc-level').textContent    = user.level || 'A1';
 
   generateSessionSummary();
