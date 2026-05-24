@@ -393,6 +393,7 @@ function endSession() {
   clearInterval(timerInterval);
 
 var actualMinutes = Math.round((TOTAL_DURATION - timeRemaining) / 60);
+var sessions = JSON.parse(localStorage.getItem('mt_sessions') || '[]');
 sessions.push({
   ts:        Date.now(),
   level:     user.level || 'A1',
