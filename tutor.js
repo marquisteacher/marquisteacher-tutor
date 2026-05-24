@@ -392,13 +392,13 @@ function endSession() {
   sessionActive = false;
   clearInterval(timerInterval);
 
-  var sessions = JSON.parse(localStorage.getItem('mt_sessions') || '[]');
-  sessions.push({
-    ts:        Date.now(),
-    level:     user.level || 'A1',
-    exchanges: messageCount,
-    duration:  15
-  });
+var actualMinutes = Math.round((TOTAL_DURATION - timeRemaining) / 60);
+sessions.push({
+  ts:        Date.now(),
+  level:     user.level || 'A1',
+  exchanges: messageCount,
+  duration:  actualMinutes
+});
   localStorage.setItem('mt_sessions', JSON.stringify(sessions));
 
   var overlay = document.getElementById('session-complete');
