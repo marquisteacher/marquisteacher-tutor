@@ -85,6 +85,25 @@ async function callGemini(userMessage) {
   }
 }
 
+// ── VOICE OUTPUT ──────────────────────────────────────────────
+function speakText(text) {
+  // Cancel any current speech
+  window.speechSynthesis.cancel();
+
+  // Strip markdown before speaking
+  var cleanText = text
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/\*(.+?)\*/g, '$1')
+    .replace(/`(.+?)`/g, '$1')
+    .replace(/\[SYSTEM:.*?\]/g, '');
+
+  var utterance   = new SpeechSynthesisUtterance(cleanText);
+  utterance.lang  = 'en-US';
+  utterance.rate  = 0.9;
+  utterance.pitch = 1;
+  window.speechSynthesis.speak(utterance);
+}
+
 // ── MARKDOWN PARSER ───────────────────────────────────────────
 function parseMarkdown(text) {
   return text
@@ -114,7 +133,12 @@ function addMessage(text, sender, correction) {
     + corrHtml
     + '</div>';
 
-  messages.appendChild(div);
+messages.appendChild(div);
+
+  // Speak Marq's messages aloud
+  if (sender === 'marq') {
+    speakText(text);
+  }
 
   // Scroll to bottom after render
   setTimeout(function() {
