@@ -132,7 +132,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Stats
   var sessions = loadSessionHistory();
-  var totalMin = sessions.length * 15;
+ var totalMin = sessions.reduce(function(sum, s) {
+  return sum + (s.duration || 15);
+}, 0);
   var streak   = calculateStreak(sessions);
 
   document.getElementById('stat-sessions').textContent = sessions.length;
