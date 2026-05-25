@@ -639,11 +639,3 @@ if (lastSession) {
   updatePhaseDisplay();
   document.getElementById('chat-input').focus();
 }
-
-async function initSession() {
-  if (sessionInitialised) return;
-  sessionInitialised = true;
-  startTimer();
-  updatePhaseDisplay();
-  document.getElementById('chat-input').focus();
-}
