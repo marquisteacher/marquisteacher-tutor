@@ -629,10 +629,12 @@ async function initSession() {
   }
 
   // Store for use in system prompt
-  if (lastSession) {
+if (lastSession) {
     localStorage.setItem('mt_last_session', JSON.stringify(lastSession));
+    console.log('Last session loaded:', lastSession.summary);
+  } else {
+    console.log('No previous session found in Firebase');
   }
-
   startTimer();
   updatePhaseDisplay();
   document.getElementById('chat-input').focus();
