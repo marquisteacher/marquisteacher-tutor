@@ -59,14 +59,15 @@ async function callGemini(userMessage) {
     var res = await fetch(API_URL + '/api/tutor/chat', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({
-        name:    user.name  || 'Student',
-        level:   user.level || 'B1',
-        skills:  JSON.parse(localStorage.getItem('mt_exam_skills') || '{}'),
-        phase:   currentPhase,
-        history: conversationHistory.slice(-10),
-        message: userMessage
-      })
+body: JSON.stringify({
+  name:        user.name  || 'Student',
+  level:       user.level || 'B1',
+  skills:      JSON.parse(localStorage.getItem('mt_exam_skills') || '{}'),
+  lastSession: JSON.parse(localStorage.getItem('mt_last_session') || 'null'),
+  phase:       currentPhase,
+  history:     conversationHistory.slice(-10),
+  message:     userMessage
+})
     });
 
     var data = await res.json();
@@ -442,13 +443,28 @@ sessions.push({
 async function generateSessionSummary() {
   try {
     var summary = await callGemini(
-      '[SYSTEM: The session is complete. Write a brief, encouraging 2-sentence summary of ' +
-      'what was covered today and one specific thing the student did well. Be warm and motivating.]'
+      '[SYSTEM: The session is complete. Write a brief encouraging 2-sentence summary of ' +
+      'what was covered today and one specific thing the student did well.]'
     );
     document.getElementById('sc-summary').textContent = summary;
+
+    // Save session to Firebase
+    var userData = JSON.parse(localStorage.getItem('mt_user') || '{}');
+    await fetch(API_URL + '/api/tutor/session', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        userId:    userData.uid,
+        level:     user.level    || 'A1',
+        summary:   summary,
+        exchanges: messageCount,
+        duration:  Math.max(1, Math.round((TOTAL_DURATION - timeRemaining) / 60))
+      })
+    });
+
   } catch(e) {
     document.getElementById('sc-summary').textContent =
-      'Great session today! Keep practising every day and you will reach your goal. See you next time! 🎓';
+      'Great session today! Keep practising every day and you will reach your goal. 🎓';
   }
 }
 
@@ -597,6 +613,31 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 // ── INIT SESSION ────────────────────────────────────────────── 
+async function initSession() {
+  if (sessionInitialised) return;
+  sessionInitialised = true;
+
+  // Load last session from Firebase
+  var lastSession = null;
+  try {
+    var userId = JSON.parse(localStorage.getItem('mt_user')).uid;
+    var res = await fetch(API_URL + '/api/tutor/session/' + userId);
+    var data = await res.json();
+    if (data.session) lastSession = data.session;
+  } catch(e) {
+    console.log('No previous session found');
+  }
+
+  // Store for use in system prompt
+  if (lastSession) {
+    localStorage.setItem('mt_last_session', JSON.stringify(lastSession));
+  }
+
+  startTimer();
+  updatePhaseDisplay();
+  document.getElementById('chat-input').focus();
+}
+
 async function initSession() {
   if (sessionInitialised) return;
   sessionInitialised = true;
