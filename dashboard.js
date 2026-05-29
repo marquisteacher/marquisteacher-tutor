@@ -122,7 +122,7 @@ async function checkLevelUp(userId) {
     var data  = await res.json();
     var totalMinutes = data.totalMinutes || 0;
 
-    if (totalMinutes >= 168) {
+    if (totalMinutes >= 245) {
       showLevelUpNotification();
     }
   } catch(e) {
