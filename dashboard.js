@@ -111,8 +111,67 @@ function loadSkillSnapshot(user) {
 document.addEventListener('DOMContentLoaded', function() {
   var user = getUser();
   if (!user) return;
+   
+ // ── LEVEL UP CHECK ────────────────────────────────────────────
+async function checkLevelUp(userId) {
+  try {
+    var token = localStorage.getItem('mt_token');
+    var res   = await fetch('https://marquisteacher-backend.onrender.com/api/auth/me', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    var data  = await res.json();
+    var totalMinutes = data.totalMinutes || 0;
 
-  // Nav
+    if (totalMinutes >= 168) {
+      showLevelUpNotification();
+    }
+  } catch(e) {
+    console.log('Level up check failed:', e);
+  }
+}
+
+function showLevelUpNotification() {
+  var existing = document.getElementById('levelup-banner');
+  if (existing) return;
+
+  var banner = document.createElement('div');
+  banner.id  = 'levelup-banner';
+  banner.innerHTML = `
+    <div style="background:linear-gradient(135deg,#f39c12,#e67e22);
+                border-radius:12px;padding:1.25rem 1.5rem;
+                margin-bottom:1.5rem;display:flex;
+                align-items:center;justify-content:space-between;
+                flex-wrap:wrap;gap:1rem">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;
+                    font-size:1rem;color:#fff;margin-bottom:0.25rem">
+          🎓 You're ready to level up!
+        </div>
+        <div style="font-size:0.85rem;color:rgba(255,255,255,0.85)">
+          You've completed 168+ minutes of practice.
+          Take the exam when you're ready!
+        </div>
+      </div>
+      <div style="display:flex;gap:0.75rem;align-items:center">
+        <a href="https://marquisteacher.github.io/MarquisTeacher-Academy/#quiz"
+           target="_blank"
+           style="background:#fff;color:#e67e22;padding:0.6rem 1.25rem;
+                  border-radius:8px;font-family:'Syne',sans-serif;
+                  font-weight:700;font-size:0.85rem;text-decoration:none">
+          Take the Exam →
+        </a>
+        <button onclick="document.getElementById('levelup-banner').style.display='none'"
+                style="background:transparent;border:none;
+                       color:rgba(255,255,255,0.7);cursor:pointer;
+                       font-size:1.2rem">✕</button>
+      </div>
+    </div>`;
+
+  var main = document.querySelector('.dashboard-main');
+  if (main) main.insertBefore(banner, main.firstChild);
+}
+ 
+   // Nav
   document.getElementById('nav-user-info').textContent = user.name || user.email;
 
   // Greeting
@@ -144,6 +203,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Skill snapshot
   loadSkillSnapshot(user);
+  
+// Check level up eligibility
+  if (user.uid) checkLevelUp(user.uid);
 });
 
 // ── STREAK CALCULATION ────────────────────────────────────────
