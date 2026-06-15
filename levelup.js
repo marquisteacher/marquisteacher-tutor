@@ -244,7 +244,7 @@ function renderQuestion() {
   q.options.forEach(function(opt, i) {
     var btn       = document.createElement('button');
     btn.className = 'quiz-option';
-    btn.innerHTML = '<span class="quiz-option-letter">' + letters[i] + '</span>' + opt;
+    btn.innerHTML = '<span class="quiz-option-letter">' + letters[i] + '.</span> ' + opt;
     btn.onclick   = function() { selectAnswer(i, btn); };
     optsEl.appendChild(btn);
   });
