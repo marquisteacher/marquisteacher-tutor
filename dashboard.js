@@ -153,7 +153,7 @@ function showLevelUpNotification() {
         </div>
       </div>
       <div style="display:flex;gap:0.75rem;align-items:center">
-        <a href="https://marquisteacher.github.io/MarquisTeacher-Academy/#quiz"
+        <a href="levelup.html"
            target="_blank"
            style="background:#fff;color:#e67e22;padding:0.6rem 1.25rem;
                   border-radius:8px;font-family:'Syne',sans-serif;
