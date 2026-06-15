@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarquisTeacher — Level Up Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-page">
+
+<!-- NAV -->
+<nav class="tutor-nav">
+  <div class="tutor-nav-brand">
+    <div class="nav-logo-mark">MT</div>
+    <div>
+      <div class="nav-brand-name">Level Up Exam</div>
+      <div class="nav-brand-sub">B1 → B2 Assessment</div>
+    </div>
+  </div>
+  <div class="tutor-nav-right">
+    <div class="nav-user" id="nav-user-info"></div>
+    <button class="btn-logout" onclick="window.location.href='dashboard.html'">← Dashboard</button>
+  </div>
+</nav>
+
+<main class="dashboard-main">
+
+  <!-- INTRO SCREEN -->
+  <div id="exam-intro">
+    <div class="dash-hero">
+      <div class="dash-hero-text">
+        <div class="dash-greeting">// Level Up Assessment</div>
+        <h2 class="dash-name">B1 → B2 Exam</h2>
+        <p class="dash-tagline">
+          20 questions across Grammar, Vocabulary, Reading and Idioms.
+          Score 70% or above to advance to B2 — Upper Intermediate level.
+          Take your time — there is no time limit.
+        </p>
+        <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap">
+          <button class="btn-start-session" style="max-width:200px" onclick="startExam()">
+            Begin Exam →
+          </button>
+          <button class="btn-logout" style="padding:1rem 1.5rem" onclick="window.location.href='dashboard.html'">
+            Not Ready Yet
+          </button>
+        </div>
+      </div>
+      <div class="dash-level-badge">
+        <div class="dlb-code" style="color:#f39c12">B1</div>
+        <div class="dlb-name">→ B2</div>
+        <div class="dlb-label">LEVEL UP</div>
+      </div>
+    </div>
+
+    <div class="dash-stats">
+      <div class="dash-stat-card">
+        <div class="dsc-num">20</div>
+        <div class="dsc-label">Questions</div>
+      </div>
+      <div class="dash-stat-card">
+        <div class="dsc-num">4</div>
+        <div class="dsc-label">Skill Areas</div>
+      </div>
+      <div class="dash-stat-card">
+        <div class="dsc-num">70%</div>
+        <div class="dsc-label">Pass Score</div>
+      </div>
+      <div class="dash-stat-card">
+        <div class="dsc-num">∞</div>
+        <div class="dsc-label">No Time Limit</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAM SCREEN -->
+  <div id="exam-main" style="display:none">
+    <div class="dash-card" style="max-width:720px;margin:0 auto">
+
+      <!-- Progress -->
+      <div style="margin-bottom:1.5rem">
+        <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem">
+          <span class="dc-tag" id="q-counter">Question 1 of 20</span>
+          <span class="dc-tag" id="q-skill">Grammar</span>
+        </div>
+        <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden">
+          <div id="progress-fill" style="height:100%;width:5%;background:var(--teal);border-radius:3px;transition:width 0.4s ease"></div>
+        </div>
+      </div>
+
+      <!-- Reading passage -->
+      <div id="reading-passage" style="display:none;background:rgba(42,179,200,0.06);border:1px solid rgba(42,179,200,0.2);border-radius:8px;padding:1rem 1.25rem;margin-bottom:1.25rem;font-size:0.9rem;color:var(--text);line-height:1.7"></div>
+
+      <!-- Question -->
+      <div id="q-text" style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:1.5rem;line-height:1.5"></div>
+
+      <!-- Options -->
+      <div id="q-options" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+
+      <!-- Next button -->
+      <div style="margin-top:1.5rem;text-align:right">
+        <button class="btn-start-session" id="next-btn" onclick="nextQuestion()" disabled style="max-width:160px">
+          Next →
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="exam-result" style="display:none">
+    <div class="sc-card" style="max-width:520px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3rem;text-align:center">
+      <div id="result-emoji" style="font-size:3rem;margin-bottom:1rem">🎓</div>
+      <h2 id="result-title" style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--text);margin-bottom:0.5rem"></h2>
+      <div id="result-sub" style="font-size:1rem;color:var(--muted);margin-bottom:2rem;font-weight:300"></div>
+
+      <div class="sc-stats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;background:var(--surface);border-radius:12px;padding:1.5rem">
+        <div>
+          <div id="result-score" style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--teal)"></div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px">Score</div>
+        </div>
+        <div>
+          <div id="result-pct" style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--gold)"></div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px">Percentage</div>
+        </div>
+        <div>
+          <div id="result-level" style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800"></div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px">New Level</div>
+        </div>
+      </div>
+
+      <div id="result-breakdown" style="margin-bottom:2rem;text-align:left"></div>
+
+      <div style="display:flex;flex-direction:column;gap:0.75rem">
+        <button class="btn-auth" id="result-btn-primary" onclick="window.location.href='dashboard.html'">
+          Back to Dashboard →
+        </button>
+        <button class="btn-auth-outline" id="result-btn-secondary" onclick="retryExam()">
+          Try Again
+        </button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="levelup.js"></script>
+</body>
+</html>
